@@ -11,7 +11,7 @@ public class User {
     private String email;
     private String fullName;
     private String password;
-    private ContactRepository contacts = new ContactSaver();
+    private final ContactRepository contacts = new ContactSaver();
 
     public int getUserId() {
         return userId;

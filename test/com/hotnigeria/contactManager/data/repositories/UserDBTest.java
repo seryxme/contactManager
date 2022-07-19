@@ -36,7 +36,7 @@ class UserDBTest {
     }
 
     @Test
-    public void contactCanBeRetrievedTest() {
+    public void userCanBeRetrievedTest() {
         userRepo.save(user);
         userRepo.save(user1);
         assertEquals(2, userRepo.count());
@@ -46,7 +46,7 @@ class UserDBTest {
     }
 
     @Test
-    public void contactCanBeDeletedTest() {
+    public void userCanBeDeletedTest() {
         userRepo.save(user);
         userRepo.save(user1);
         assertEquals(2, userRepo.count());
@@ -59,7 +59,7 @@ class UserDBTest {
     }
 
     @Test
-    public void contactCanBeDeletedByIdTest() {
+    public void userCanBeDeletedByIdTest() {
         userRepo.save(user);
         userRepo.save(user1);
         assertEquals(2, userRepo.count());
@@ -72,7 +72,7 @@ class UserDBTest {
     }
 
     @Test
-    public void contactCanBeUpdatedTest() {
+    public void userCanBeUpdatedTest() {
         userRepo.save(user);
         assertEquals(1, userRepo.count());
 
