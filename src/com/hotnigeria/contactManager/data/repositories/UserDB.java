@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDB implements UserRepository{
-    ArrayList<User> users = new ArrayList<>();
+    private ArrayList<User> users = new ArrayList<>();
+    private int counter;
     @Override
     public User save(User user) {
         for(User foundUser: users) {
@@ -16,7 +17,7 @@ public class UserDB implements UserRepository{
                 return foundUser;
             }
         }
-        int counter = count() + 1;
+        counter++;
         user.setUserId(counter);
         users.add(user);
         return user;

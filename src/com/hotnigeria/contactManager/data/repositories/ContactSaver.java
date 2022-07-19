@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContactSaver implements ContactRepository{
-    ArrayList<Contact> contacts = new ArrayList<>();
+    private ArrayList<Contact> contacts = new ArrayList<>();
+    private int counter;
 
     @Override
     public Contact save(Contact contact) {
@@ -16,7 +17,7 @@ public class ContactSaver implements ContactRepository{
                 return contact1;
             }
         }
-        int counter = count() + 1;
+        counter++;
         contact.setContactId(counter);
         contacts.add(contact);
         return contact;
