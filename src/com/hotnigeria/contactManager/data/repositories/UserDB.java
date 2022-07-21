@@ -45,13 +45,28 @@ public class UserDB implements UserRepository{
     }
 
     @Override
-    public User findByUsername(String username) {
+    public User findByFullName(String fullName) {
+        for(User foundUser: users) {
+            if (foundUser.getFullName().equalsIgnoreCase(fullName)) {
+                return foundUser;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        for(User foundUser: users) {
+            if (foundUser.getEmail().equalsIgnoreCase(email)) {
+                return foundUser;
+            }
+        }
         return null;
     }
 
     @Override
     public List<User> findAllUsers() {
-        return null;
+        return users;
     }
 
     @Override
