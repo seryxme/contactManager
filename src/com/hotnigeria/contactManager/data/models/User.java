@@ -3,6 +3,7 @@ package com.hotnigeria.contactManager.data.models;
 import com.hotnigeria.contactManager.data.repositories.ContactRepository;
 import com.hotnigeria.contactManager.data.repositories.ContactSaver;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class User {
@@ -11,7 +12,7 @@ public class User {
     private String email;
     private String fullName;
     private String password;
-    private final ContactRepository contacts = new ContactSaver();
+    private final List<Contact> contacts = new ArrayList<>();
 
     public int getUserId() {
         return userId;
@@ -50,18 +51,18 @@ public class User {
     }
 
     public void addContact(Contact contact) {
-        contacts.save(contact);
+        contacts.add(contact);
     }
 
     public void deleteContact(Contact contact) {
-        contacts.delete(contact);
+        contacts.remove(contact);
     }
 
-    public List<Contact> findContact(String name) {
-        return contacts.findByFirstName(name);
-    }
+//    public List<Contact> findContact(String name) {
+//        return contacts.findByFirstName(name);
+//    }
 
     public List<Contact> showAllContacts() {
-        return contacts.findAll();
+        return contacts;
     }
 }
