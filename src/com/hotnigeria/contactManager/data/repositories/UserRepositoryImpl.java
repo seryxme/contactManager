@@ -1,12 +1,11 @@
 package com.hotnigeria.contactManager.data.repositories;
 
-import com.hotnigeria.contactManager.data.models.Contact;
 import com.hotnigeria.contactManager.data.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDB implements UserRepository{
+public class UserRepositoryImpl implements UserRepository{
     private ArrayList<User> users = new ArrayList<>();
     private int counter;
     @Override

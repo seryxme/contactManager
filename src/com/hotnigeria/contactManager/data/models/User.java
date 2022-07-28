@@ -1,8 +1,5 @@
 package com.hotnigeria.contactManager.data.models;
 
-import com.hotnigeria.contactManager.data.repositories.ContactRepository;
-import com.hotnigeria.contactManager.data.repositories.ContactSaver;
-
 import java.util.ArrayList;
 import java.util.List;
 

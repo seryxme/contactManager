@@ -5,4 +5,6 @@ import com.hotnigeria.contactManager.data.models.Contact;
 public interface ContactService {
 
     Contact addNewContact(Contact contact);
+
+    int totalContacts();
 }

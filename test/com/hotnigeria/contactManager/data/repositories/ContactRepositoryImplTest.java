@@ -6,14 +6,14 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ContactSaverTest {
+class ContactRepositoryImplTest {
     ContactRepository contactRepo;
     Contact contact;
     Contact contact1;
 
     @BeforeEach
     void setUp() {
-        contactRepo = new ContactSaver();
+        contactRepo = new ContactRepositoryImpl();
         contact = new Contact();
         contact1 = new Contact();
 

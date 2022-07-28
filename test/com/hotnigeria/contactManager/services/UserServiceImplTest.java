@@ -1,6 +1,8 @@
 package com.hotnigeria.contactManager.services;
 
-import com.hotnigeria.contactManager.data.repositories.UserDB;
+import com.hotnigeria.contactManager.data.repositories.ContactRepository;
+import com.hotnigeria.contactManager.data.repositories.ContactRepositoryImpl;
+import com.hotnigeria.contactManager.data.repositories.UserRepositoryImpl;
 import com.hotnigeria.contactManager.data.repositories.UserRepository;
 import com.hotnigeria.contactManager.dtos.requests.AddContactRequest;
 import com.hotnigeria.contactManager.dtos.requests.RegisterRequest;
@@ -10,19 +12,21 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserServiceMainTest {
+class UserServiceImplTest {
     UserService userService;
     RegisterRequest request;
     AddContactRequest addRequest;
     ContactService contactService;
     UserRepository userRepository;
+    ContactRepository contactRepository;
 
 
     @BeforeEach
     void setUp() {
-        contactService = new ContactServiceMain();
-        userRepository = new UserDB();
-        userService = new UserServiceMain(userRepository, contactService);
+        contactRepository = new ContactRepositoryImpl();
+        contactService = new ContactServiceImpl(contactRepository);
+        userRepository = new UserRepositoryImpl();
+        userService = new UserServiceImpl(userRepository, contactService);
         addRequest = new AddContactRequest();
 
         request = new RegisterRequest();
@@ -65,6 +69,7 @@ class UserServiceMainTest {
         userService.addContact(addRequest);
 
         assertEquals(1, userService.findAllUserContacts("johnford@gmail.com").size());
+        assertEquals(1, contactService.totalContacts());
     }
 
 

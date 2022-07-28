@@ -5,7 +5,7 @@ import com.hotnigeria.contactManager.data.models.Contact;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContactSaver implements ContactRepository{
+public class ContactRepositoryImpl implements ContactRepository{
     private ArrayList<Contact> contacts = new ArrayList<>();
     private int counter;
 

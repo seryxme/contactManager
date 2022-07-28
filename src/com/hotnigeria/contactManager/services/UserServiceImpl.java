@@ -2,6 +2,9 @@ package com.hotnigeria.contactManager.services;
 
 import com.hotnigeria.contactManager.data.models.Contact;
 import com.hotnigeria.contactManager.data.models.User;
+import com.hotnigeria.contactManager.data.repositories.ContactRepository;
+import com.hotnigeria.contactManager.data.repositories.ContactRepositoryImpl;
+import com.hotnigeria.contactManager.data.repositories.UserRepositoryImpl;
 import com.hotnigeria.contactManager.data.repositories.UserRepository;
 import com.hotnigeria.contactManager.dtos.requests.AddContactRequest;
 import com.hotnigeria.contactManager.dtos.requests.RegisterRequest;
@@ -12,14 +15,19 @@ import com.hotnigeria.contactManager.utils.Mapper;
 
 import java.util.List;
 
-public class UserServiceMain implements UserService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private ContactService contactService;
 
-    public UserServiceMain(UserRepository userRepository, ContactService contactService) {
+    public UserServiceImpl(UserRepository userRepository, ContactService contactService) {
         this.userRepository = userRepository;
         this.contactService = contactService;
+    }
+    public UserServiceImpl(){
+        this.userRepository = new UserRepositoryImpl();
+        ContactRepository contactRepository = new ContactRepositoryImpl();
+        this.contactService = new ContactServiceImpl(contactRepository);
     }
 
     @Override

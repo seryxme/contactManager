@@ -6,14 +6,14 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserDBTest {
+class UserRepositoryImplTest {
     UserRepository userRepo;
     User user;
     User user1;
 
     @BeforeEach
     void setUp() {
-        userRepo = new UserDB();
+        userRepo = new UserRepositoryImpl();
         user = new User();
         user1 = new User();
 
