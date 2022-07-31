@@ -16,6 +16,8 @@ class UserServiceImplTest {
     UserService userService;
     RegisterRequest request;
     AddContactRequest addRequest;
+    AddContactRequest addRequest1;
+    AddContactRequest addRequest2;
     ContactService contactService;
     UserRepository userRepository;
     ContactRepository contactRepository;
@@ -28,12 +30,32 @@ class UserServiceImplTest {
         userRepository = new UserRepositoryImpl();
         userService = new UserServiceImpl(userRepository, contactService);
         addRequest = new AddContactRequest();
+        addRequest1 = new AddContactRequest();
+        addRequest2 = new AddContactRequest();
 
         request = new RegisterRequest();
         request.setEmail("johnford@gmail.com");
         request.setFullName("John Ford");
         request.setUsername("johnford2");
         request.setPassword("johnny234");
+
+        addRequest.setEmail("newford@gmail.com");
+        addRequest.setFirstName("New");
+        addRequest.setLastName("Ford");
+        addRequest.setPhoneNumber("08024533933");
+        addRequest.setUserEmail(request.getEmail());
+
+        addRequest1.setEmail("ashford@gmail.com");
+        addRequest1.setFirstName("Ashley");
+        addRequest1.setLastName("Ford");
+        addRequest1.setPhoneNumber("08024534567");
+        addRequest1.setUserEmail(request.getEmail());
+
+        addRequest2.setEmail("chetom@gmail.com");
+        addRequest2.setFirstName("Cheryl");
+        addRequest2.setLastName("Tom");
+        addRequest2.setPhoneNumber("08034567933");
+        addRequest2.setUserEmail(request.getEmail());
     }
 
     @Test
@@ -61,15 +83,22 @@ class UserServiceImplTest {
     public void addContactTest() {
         userService.register(request);
 
-        addRequest.setEmail("newford@gmail.com");
-        addRequest.setFirstName("New");
-        addRequest.setLastName("Ford");
-        addRequest.setPhoneNumber("08024533933");
-        addRequest.setUserEmail(request.getEmail());
         userService.addContact(addRequest);
 
         assertEquals(1, userService.findAllUserContacts("johnford@gmail.com").size());
         assertEquals(1, contactService.totalContacts());
+    }
+
+    @Test
+    public void findContactByFirstNameReturnIdTest() {
+        userService.register(request);
+
+        userService.addContact(addRequest);
+        userService.addContact(addRequest1);
+        userService.addContact(addRequest2);
+
+        assertEquals(3, contactService.totalContacts());
+        assertEquals(2, userService.findContactByFirstName("Ashley"));
     }
 
 

@@ -4,13 +4,18 @@ import com.hotnigeria.contactManager.controllers.UserController;
 import com.hotnigeria.contactManager.data.models.Contact;
 import com.hotnigeria.contactManager.dtos.requests.AddContactRequest;
 import com.hotnigeria.contactManager.dtos.requests.RegisterRequest;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.Scanner;
 
+@SpringBootApplication
 public class Main {
     private static UserController userController = new UserController();
     private static Scanner input = new Scanner(System.in);
     public static void main(String[] args) {
+        SpringApplication.run(Main.class, args);
+
         mainMenu();
     }
 
@@ -20,13 +25,18 @@ public class Main {
                 1. Create Account
                 2. Add Contact
                 3. Find Contact
+                4. Edit Contact
+                5. Delete Contact
                 """;
         switch (userInput(mainMenu)) {
             case "1" -> createAccount();
             case "2" -> addContact();
             case "3" -> findContact();
+            case "4" -> editContact();
+            case "5" -> deleteContact();
         }
     }
+
 
     private static String userInput(String prompt) {
         System.out.println(prompt);
@@ -63,4 +73,17 @@ public class Main {
         }
         mainMenu();
     }
+
+    private static void editContact() {
+        var contacts = userController.findContactBelongingTo(userInput("Enter your email: "));
+        String contactName = userInput("Enter contact name: ");
+        for(Contact contact: contacts) {
+            System.out.println(contact);
+        }
+    }
+
+    private static void deleteContact() {
+
+    }
+
 }

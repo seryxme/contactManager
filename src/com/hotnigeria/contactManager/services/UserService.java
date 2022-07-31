@@ -16,4 +16,6 @@ public interface UserService {
     AddContactResponse addContact(AddContactRequest addRequest);
 
     List<Contact> findAllUserContacts(String email);
+
+    int findContactByFirstName(String firstName);
 }

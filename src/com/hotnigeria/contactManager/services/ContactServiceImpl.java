@@ -3,6 +3,8 @@ package com.hotnigeria.contactManager.services;
 import com.hotnigeria.contactManager.data.models.Contact;
 import com.hotnigeria.contactManager.data.repositories.ContactRepository;
 
+import java.util.List;
+
 public class ContactServiceImpl implements ContactService {
     private final ContactRepository contactRepository;
 
@@ -18,5 +20,10 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public int totalContacts() {
         return contactRepository.count();
+    }
+
+    @Override
+    public List<Contact> findContactByFirstName(String firstName) {
+        return contactRepository.findByFirstName(firstName);
     }
 }

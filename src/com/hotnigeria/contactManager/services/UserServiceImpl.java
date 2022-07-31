@@ -13,7 +13,9 @@ import com.hotnigeria.contactManager.dtos.responses.RegisterResponse;
 import com.hotnigeria.contactManager.exceptions.UserExistsException;
 import com.hotnigeria.contactManager.utils.Mapper;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class UserServiceImpl implements UserService {
 
@@ -75,5 +77,21 @@ public class UserServiceImpl implements UserService {
     public List<Contact> findAllUserContacts(String email) {
         User user = userRepository.findByEmail(email);
         return user.showAllContacts();
+    }
+
+    @Override
+    public int findContactByFirstName(String firstName) {
+        return 0;
+    }
+
+    private List<Contact> findContactListByFirstName(String email, String firstName) {
+        List<Contact> foundContacts = new ArrayList<>();
+        var userContacts = findAllUserContacts(email);
+        for(Contact contact: userContacts) {
+            if (Objects.equals(contact.getFirstName(), firstName)) {
+                foundContacts.add(contact);
+            }
+        }
+        return foundContacts;
     }
 }

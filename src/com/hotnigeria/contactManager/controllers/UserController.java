@@ -8,22 +8,26 @@ import com.hotnigeria.contactManager.dtos.responses.AddContactResponse;
 import com.hotnigeria.contactManager.dtos.responses.RegisterResponse;
 import com.hotnigeria.contactManager.services.UserService;
 import com.hotnigeria.contactManager.services.UserServiceImpl;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@RestController
 public class UserController {
 
     private UserService userService = new UserServiceImpl();
 
-    public RegisterResponse registerUser(RegisterRequest registerRequest){
+    @PostMapping("/user")
+    public RegisterResponse registerUser(@RequestBody RegisterRequest registerRequest){
         return userService.register(registerRequest);
     }
 
-    public AddContactResponse addContact(AddContactRequest addContactRequest){
+    @PatchMapping("/user")
+    public AddContactResponse addContact(@RequestBody AddContactRequest addContactRequest){
         return userService.addContact(addContactRequest);
     }
 
-    public List<Contact> findContactBelongingTo(String email){
+    @GetMapping("/user/{email}")
+    public List<Contact> findContactBelongingTo(@PathVariable String email){
         return userService.findAllUserContacts(email);
     }
 }

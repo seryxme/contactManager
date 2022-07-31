@@ -57,6 +57,18 @@ public class ContactRepositoryImpl implements ContactRepository{
     }
 
     @Override
+    public List<Contact> findByLastName(String lastName) {
+        ArrayList<Contact> foundContacts = new ArrayList<>();
+
+        for(Contact contact: contacts) {
+            if (contact.getLastName().equalsIgnoreCase(lastName)) {
+                foundContacts.add(contact);
+            }
+        }
+        return foundContacts;
+    }
+
+    @Override
     public List<Contact> findAll() {
         return contacts;
     }

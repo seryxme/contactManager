@@ -11,7 +11,7 @@ public interface ContactRepository {
     void delete(int contactId);
     Contact findById(int Id);
     List<Contact> findByFirstName(String firstName);
-//    List<Contact> findByLastName(String lastName);
+    List<Contact> findByLastName(String lastName);
     List<Contact> findAll();
     int count();
 }

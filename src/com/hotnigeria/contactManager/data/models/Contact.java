@@ -12,12 +12,12 @@ public class Contact {
 
     @Override
     public String toString() {
-        return "Contact{" +
-                "contactId=" + contactId +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+        return String.format("""
+                
+                First Name: %s
+                Last Name: %s
+                Phone Number: %s
+                Email: %s
+                """, firstName, lastName, phoneNumber, email);
     }
 }
