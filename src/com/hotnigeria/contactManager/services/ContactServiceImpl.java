@@ -26,4 +26,9 @@ public class ContactServiceImpl implements ContactService {
     public List<Contact> findContactByFirstName(String firstName) {
         return contactRepository.findByFirstName(firstName);
     }
+
+    @Override
+    public void deleteContact(Contact contact) {
+        contactRepository.delete(contact.getContactId());
+    }
 }

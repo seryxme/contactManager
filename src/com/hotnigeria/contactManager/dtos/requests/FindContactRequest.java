@@ -1,5 +1,9 @@
 package com.hotnigeria.contactManager.dtos.requests;
 
-public class FindContactRequest {
+import lombok.Data;
 
+@Data
+public class FindContactRequest {
+    private String contactDetail;
+    private String userEmail;
 }

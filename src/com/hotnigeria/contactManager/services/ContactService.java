@@ -11,4 +11,6 @@ public interface ContactService {
     int totalContacts();
 
     List<Contact> findContactByFirstName(String firstName);
+
+    void deleteContact(Contact contact);
 }

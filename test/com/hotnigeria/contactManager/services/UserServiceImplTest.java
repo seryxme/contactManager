@@ -1,12 +1,16 @@
 package com.hotnigeria.contactManager.services;
 
+import com.hotnigeria.contactManager.data.models.Contact;
 import com.hotnigeria.contactManager.data.repositories.ContactRepository;
 import com.hotnigeria.contactManager.data.repositories.ContactRepositoryImpl;
 import com.hotnigeria.contactManager.data.repositories.UserRepositoryImpl;
 import com.hotnigeria.contactManager.data.repositories.UserRepository;
 import com.hotnigeria.contactManager.dtos.requests.AddContactRequest;
+import com.hotnigeria.contactManager.dtos.requests.DeleteContactRequest;
+import com.hotnigeria.contactManager.dtos.requests.FindContactRequest;
 import com.hotnigeria.contactManager.dtos.requests.RegisterRequest;
 import com.hotnigeria.contactManager.exceptions.UserExistsException;
+import com.hotnigeria.contactManager.utils.Mapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,6 +22,7 @@ class UserServiceImplTest {
     AddContactRequest addRequest;
     AddContactRequest addRequest1;
     AddContactRequest addRequest2;
+    FindContactRequest findRequest;
     ContactService contactService;
     UserRepository userRepository;
     ContactRepository contactRepository;
@@ -32,6 +37,7 @@ class UserServiceImplTest {
         addRequest = new AddContactRequest();
         addRequest1 = new AddContactRequest();
         addRequest2 = new AddContactRequest();
+        findRequest = new FindContactRequest();
 
         request = new RegisterRequest();
         request.setEmail("johnford@gmail.com");
@@ -97,9 +103,31 @@ class UserServiceImplTest {
         userService.addContact(addRequest1);
         userService.addContact(addRequest2);
 
+        findRequest.setUserEmail(request.getEmail());
+        findRequest.setContactDetail("Ashley");
+
         assertEquals(3, contactService.totalContacts());
-        assertEquals(2, userService.findContactByFirstName("Ashley"));
+        assertEquals(2, userService.findContactByDetail(findRequest).getFoundContacts().get(0).getContactId());
     }
 
+    @Test
+    public void deleteContactByFirstNameReturnIdTest() {
+        userService.register(request);
 
+        userService.addContact(addRequest);
+        userService.addContact(addRequest1);
+        userService.addContact(addRequest2);
+
+        findRequest.setUserEmail(request.getEmail());
+        findRequest.setContactDetail("Ashley");
+
+        Contact contact = userService.findContactByDetail(findRequest).getFoundContacts().get(0);
+        DeleteContactRequest deleteRequest = new DeleteContactRequest();
+        Mapper.map(contact, deleteRequest);
+        deleteRequest.setUserEmail(request.getEmail());
+        userService.deleteContact(deleteRequest);
+
+        assertEquals(2, contactService.totalContacts());
+        assertEquals(2, userService.findAllUserContacts("johnford@gmail.com").size());
+    }
 }

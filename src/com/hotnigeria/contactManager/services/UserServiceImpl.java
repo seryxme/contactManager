@@ -7,13 +7,16 @@ import com.hotnigeria.contactManager.data.repositories.ContactRepositoryImpl;
 import com.hotnigeria.contactManager.data.repositories.UserRepositoryImpl;
 import com.hotnigeria.contactManager.data.repositories.UserRepository;
 import com.hotnigeria.contactManager.dtos.requests.AddContactRequest;
+import com.hotnigeria.contactManager.dtos.requests.DeleteContactRequest;
+import com.hotnigeria.contactManager.dtos.requests.FindContactRequest;
 import com.hotnigeria.contactManager.dtos.requests.RegisterRequest;
 import com.hotnigeria.contactManager.dtos.responses.AddContactResponse;
+import com.hotnigeria.contactManager.dtos.responses.DeleteContactResponse;
+import com.hotnigeria.contactManager.dtos.responses.FindContactResponse;
 import com.hotnigeria.contactManager.dtos.responses.RegisterResponse;
 import com.hotnigeria.contactManager.exceptions.UserExistsException;
 import com.hotnigeria.contactManager.utils.Mapper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -80,18 +83,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int findContactByFirstName(String firstName) {
-        return 0;
-    }
-
-    private List<Contact> findContactListByFirstName(String email, String firstName) {
-        List<Contact> foundContacts = new ArrayList<>();
-        var userContacts = findAllUserContacts(email);
+    public FindContactResponse findContactByDetail(FindContactRequest request) {
+        FindContactResponse foundContacts = new FindContactResponse();
+        var userContacts = findAllUserContacts(request.getUserEmail());
         for(Contact contact: userContacts) {
-            if (Objects.equals(contact.getFirstName(), firstName)) {
-                foundContacts.add(contact);
+            if (Objects.equals(contact.getFirstName(), request.getContactDetail())
+            || Objects.equals(contact.getLastName(), request.getContactDetail())
+            || Objects.equals(contact.getPhoneNumber(), request.getContactDetail())) {
+                foundContacts.addFoundContact(contact);
             }
         }
         return foundContacts;
     }
+
+    @Override
+    public DeleteContactResponse deleteContact(DeleteContactRequest deleteRequest) {
+        Contact contact = new Contact();
+
+        Mapper.map(deleteRequest, contact);
+        contactService.deleteContact(contact);
+
+        User user = userRepository.findByEmail(deleteRequest.getUserEmail());
+        user.showAllContacts().remove(contact);
+
+        userRepository.save(user);
+
+        return null;
+    }
+
 }
