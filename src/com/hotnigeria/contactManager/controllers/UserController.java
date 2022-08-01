@@ -35,11 +35,13 @@ public class UserController {
         return userService.findAllUserContacts(email);
     }
 
+    @PostMapping("/contacts")
     public FindContactResponse findContactByDetail(FindContactRequest request) {
         return userService.findContactByDetail(request);
     }
 
-    public DeleteContactResponse deleteContact(DeleteContactRequest deleteRequest) {
+    @DeleteMapping("/user")
+    public DeleteContactResponse deleteContact(@RequestBody DeleteContactRequest deleteRequest) {
         return userService.deleteContact(deleteRequest);
     }
 }
