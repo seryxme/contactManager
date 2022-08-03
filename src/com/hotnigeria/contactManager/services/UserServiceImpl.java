@@ -2,9 +2,6 @@ package com.hotnigeria.contactManager.services;
 
 import com.hotnigeria.contactManager.data.models.Contact;
 import com.hotnigeria.contactManager.data.models.User;
-import com.hotnigeria.contactManager.data.repositories.ContactRepository;
-import com.hotnigeria.contactManager.data.repositories.ContactRepositoryImpl;
-import com.hotnigeria.contactManager.data.repositories.UserRepositoryImpl;
 import com.hotnigeria.contactManager.data.repositories.UserRepository;
 import com.hotnigeria.contactManager.dtos.requests.AddContactRequest;
 import com.hotnigeria.contactManager.dtos.requests.DeleteContactRequest;
@@ -16,23 +13,24 @@ import com.hotnigeria.contactManager.dtos.responses.FindContactResponse;
 import com.hotnigeria.contactManager.dtos.responses.RegisterResponse;
 import com.hotnigeria.contactManager.exceptions.UserExistsException;
 import com.hotnigeria.contactManager.utils.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Service
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
     private ContactService contactService;
 
     public UserServiceImpl(UserRepository userRepository, ContactService contactService) {
         this.userRepository = userRepository;
         this.contactService = contactService;
-    }
-    public UserServiceImpl(){
-        this.userRepository = new UserRepositoryImpl();
-        ContactRepository contactRepository = new ContactRepositoryImpl();
-        this.contactService = new ContactServiceImpl(contactRepository);
     }
 
     @Override
@@ -45,20 +43,20 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         RegisterResponse response = new RegisterResponse();
-        response.setMessage("Registration successful!");
+        response.setMessage(String.format("%s registered successfully!", request.getEmail()));
 
         return response;
     }
 
     private void isExist(RegisterRequest request) {
-        User savedUser = userRepository.findByEmail(request.getEmail());
+        User savedUser = userRepository.findUserByEmail(request.getEmail());
         if(savedUser != null) throw new UserExistsException(request.getEmail() + " already exists.");
     }
 
 
     @Override
     public int totalUsers() {
-        return userRepository.count();
+        return (int) userRepository.count();
     }
 
     @Override
@@ -68,32 +66,42 @@ public class UserServiceImpl implements UserService {
         Mapper.map(addRequest, contact);
         Contact newContact = contactService.addNewContact(contact);
 
-        User user = userRepository.findByEmail(addRequest.getUserEmail());
-        user.showAllContacts().add(newContact);
+        User user = userRepository.findUserByEmail(addRequest.getUserEmail());
+        user.getContacts().add(newContact);
 
         userRepository.save(user);
 
-        return null;
+        AddContactResponse response = new AddContactResponse();
+        response.setMessage(String.format("%s successfully saved!", addRequest.getFirstName()));
+
+        return response;
     }
 
     @Override
-    public List<Contact> findAllUserContacts(String email) {
-        User user = userRepository.findByEmail(email);
-        return user.showAllContacts();
+    public List<FindContactResponse> findAllUserContacts(String email) {
+        User user = userRepository.findUserByEmail(email);
+        List<Contact> contactsList = user.getContacts();
+        List<FindContactResponse> responseList = new ArrayList<>();
+        for (Contact contact: contactsList) {
+            FindContactResponse response = new FindContactResponse();
+            Mapper.map(contact, response);
+            responseList.add(response);
+        }
+        return responseList;
     }
 
     @Override
-    public FindContactResponse findContactByDetail(FindContactRequest request) {
+    public List<FindContactResponse> findContactByDetail(FindContactRequest request) {
         FindContactResponse foundContacts = new FindContactResponse();
-        var userContacts = findAllUserContacts(request.getUserEmail());
-        for(Contact contact: userContacts) {
-            if (Objects.equals(contact.getFirstName(), request.getContactDetail())
-            || Objects.equals(contact.getLastName(), request.getContactDetail())
-            || Objects.equals(contact.getPhoneNumber(), request.getContactDetail())) {
-                foundContacts.addFoundContact(contact);
+        List<FindContactResponse> userContacts = findAllUserContacts(request.getUserEmail());
+        List<FindContactResponse> responseList = new ArrayList<>();
+        for(FindContactResponse response : userContacts) {
+            if (Objects.equals(response.getFirstName(), request.getContactDetail())
+            || Objects.equals(response.getLastName(), request.getContactDetail())) {
+                responseList.add(response);
             }
         }
-        return foundContacts;
+        return responseList;
     }
 
     @Override
@@ -103,8 +111,8 @@ public class UserServiceImpl implements UserService {
         Mapper.map(deleteRequest, contact);
         contactService.deleteContact(contact);
 
-        User user = userRepository.findByEmail(deleteRequest.getUserEmail());
-        user.showAllContacts().remove(contact);
+        User user = userRepository.findUserByEmail(deleteRequest.getUserEmail());
+        user.getContacts().remove(contact);
 
         userRepository.save(user);
 

@@ -1,11 +1,11 @@
 package com.hotnigeria.contactManager;
 
 import com.hotnigeria.contactManager.controllers.UserController;
-import com.hotnigeria.contactManager.data.models.Contact;
 import com.hotnigeria.contactManager.dtos.requests.AddContactRequest;
 import com.hotnigeria.contactManager.dtos.requests.DeleteContactRequest;
 import com.hotnigeria.contactManager.dtos.requests.FindContactRequest;
 import com.hotnigeria.contactManager.dtos.requests.RegisterRequest;
+import com.hotnigeria.contactManager.dtos.responses.FindContactResponse;
 import com.hotnigeria.contactManager.utils.Mapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,7 +17,7 @@ public class Main {
     private static UserController userController = new UserController();
     private static Scanner input = new Scanner(System.in);
     public static void main(String[] args) {
-//        SpringApplication.run(Main.class, args);
+        SpringApplication.run(Main.class, args);
 
         mainMenu();
     }
@@ -52,6 +52,7 @@ public class Main {
         request.setPhoneNumber(userInput("Phone Number: "));
         request.setUsername(userInput("Username: "));
         request.setEmail(userInput("Email address:"));
+        request.setPassword(userInput("Password:"));
 
         userController.registerUser(request);
         mainMenu();
@@ -70,11 +71,16 @@ public class Main {
     }
 
     private static void findAllUserContacts() {
-        var contacts = userController.findContactBelongingTo(userInput("Enter your email: "));
-        for(Contact contact: contacts) {
-            System.out.println(contact);
+        try {
+            var foundContacts = userController.findContactBelongingTo(userInput("Enter your email: "));
+            for (FindContactResponse contact : foundContacts) {
+                System.out.println(contact);
+            }
+            mainMenu();
+        } catch(NullPointerException ex) {
+            System.err.println("An error occurred.");
+         mainMenu();
         }
-        mainMenu();
     }
 
     private static void editContact() {
@@ -110,14 +116,13 @@ public class Main {
         mainMenu();
     }
 
-    private static Contact findContact() {
+    private static FindContactResponse findContact() {
         FindContactRequest request = new FindContactRequest();
         request.setUserEmail(userInput("Enter your email: "));
-        request.setContactDetail(userInput("Enter contact name or phone number: "));
-        var foundContacts = userController.findContactByDetail(request).getFoundContacts();
-        int listNumber = 1;
-        for(Contact contact: foundContacts) {
-            System.out.printf("%d. %s%n", listNumber, contact);
+        request.setContactDetail(userInput("Enter contact name: "));
+        var foundContacts = userController.findContactByDetail(request);
+        for(FindContactResponse contact: foundContacts) {
+            System.out.printf("%s%n", contact);
         }
         int contactListNumber = Integer.parseInt(userInput("Enter list number of the contact: "));
         return foundContacts.get(contactListNumber-1);

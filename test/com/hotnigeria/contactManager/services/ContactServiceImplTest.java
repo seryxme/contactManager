@@ -2,7 +2,6 @@ package com.hotnigeria.contactManager.services;
 
 import com.hotnigeria.contactManager.data.models.Contact;
 import com.hotnigeria.contactManager.data.repositories.ContactRepository;
-import com.hotnigeria.contactManager.data.repositories.ContactRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

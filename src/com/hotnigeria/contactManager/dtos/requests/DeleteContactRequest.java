@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class DeleteContactRequest {
-    private int contactId;
+    private String contactId;
     private String firstName;
     private String lastName;
     private String phoneNumber;

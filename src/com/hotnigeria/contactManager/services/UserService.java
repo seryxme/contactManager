@@ -1,6 +1,5 @@
 package com.hotnigeria.contactManager.services;
 
-import com.hotnigeria.contactManager.data.models.Contact;
 import com.hotnigeria.contactManager.dtos.requests.AddContactRequest;
 import com.hotnigeria.contactManager.dtos.requests.DeleteContactRequest;
 import com.hotnigeria.contactManager.dtos.requests.FindContactRequest;
@@ -18,9 +17,9 @@ public interface UserService {
     int totalUsers();
     AddContactResponse addContact(AddContactRequest addRequest);
 
-    List<Contact> findAllUserContacts(String email);
+    List<FindContactResponse> findAllUserContacts(String email);
 
-    FindContactResponse findContactByDetail(FindContactRequest request);
+    List<FindContactResponse> findContactByDetail(FindContactRequest request);
 
     DeleteContactResponse deleteContact(DeleteContactRequest deleteRequest);
 }

@@ -2,8 +2,6 @@ package com.hotnigeria.contactManager.services;
 
 import com.hotnigeria.contactManager.data.models.Contact;
 import com.hotnigeria.contactManager.data.repositories.ContactRepository;
-import com.hotnigeria.contactManager.data.repositories.ContactRepositoryImpl;
-import com.hotnigeria.contactManager.data.repositories.UserRepositoryImpl;
 import com.hotnigeria.contactManager.data.repositories.UserRepository;
 import com.hotnigeria.contactManager.dtos.requests.AddContactRequest;
 import com.hotnigeria.contactManager.dtos.requests.DeleteContactRequest;

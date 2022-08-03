@@ -4,6 +4,7 @@ import com.hotnigeria.contactManager.data.models.Contact;
 
 import java.util.List;
 
+
 public interface ContactService {
 
     Contact addNewContact(Contact contact);

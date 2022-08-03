@@ -5,6 +5,7 @@ import com.hotnigeria.contactManager.data.models.User;
 import com.hotnigeria.contactManager.dtos.requests.AddContactRequest;
 import com.hotnigeria.contactManager.dtos.requests.DeleteContactRequest;
 import com.hotnigeria.contactManager.dtos.requests.RegisterRequest;
+import com.hotnigeria.contactManager.dtos.responses.FindContactResponse;
 
 public class Mapper {
     public static void map(RegisterRequest request, User user) {
@@ -12,6 +13,7 @@ public class Mapper {
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());
+        user.setPhoneNumber(request.getPhoneNumber());
     }
 
     public static void map(AddContactRequest addRequest, Contact contact) {
@@ -21,11 +23,9 @@ public class Mapper {
         contact.setLastName(addRequest.getLastName());
     }
 
-    public static void map(Contact contact, AddContactRequest request) {
-        request.setFirstName(contact.getFirstName());
-        request.setLastName(contact.getLastName());
-        request.setPhoneNumber(contact.getPhoneNumber());
-        request.setEmail(contact.getEmail());
+    public static void map(FindContactResponse response, AddContactRequest request) {
+        request.setFirstName(response.getFirstName());
+        request.setLastName(response.getLastName());
     }
 
     public static void map(DeleteContactRequest deleteRequest, Contact contact) {
@@ -36,11 +36,15 @@ public class Mapper {
         contact.setLastName(deleteRequest.getLastName());
     }
 
-    public static void map(Contact contact, DeleteContactRequest request) {
+    public static void map(FindContactResponse contact, DeleteContactRequest request) {
         request.setContactId(contact.getContactId());
         request.setFirstName(contact.getFirstName());
         request.setLastName(contact.getLastName());
-        request.setPhoneNumber(contact.getPhoneNumber());
-        request.setEmail(contact.getEmail());
+    }
+
+    public static void map(Contact contact, FindContactResponse response) {
+        response.setContactId(contact.getContactId());
+        response.setFirstName(contact.getFirstName());
+        response.setLastName(contact.getLastName());
     }
 }
