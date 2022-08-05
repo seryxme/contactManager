@@ -12,7 +12,6 @@ import com.hotnigeria.contactManager.dtos.responses.FindContactResponse;
 import com.hotnigeria.contactManager.dtos.responses.RegisterResponse;
 import com.hotnigeria.contactManager.exceptions.UserExistsException;
 import com.hotnigeria.contactManager.services.UserService;
-import com.hotnigeria.contactManager.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
